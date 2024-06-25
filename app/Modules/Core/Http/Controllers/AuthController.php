@@ -5,20 +5,17 @@ namespace App\Modules\Core\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+
+use App\Modules\Core\Http\Validators\AuthValidator\LoginRequest;
+use App\Modules\Core\Http\Validators\AuthValidator\RegisterRequest;
 
 use App\Modules\Core\Domain\Entities\UserEntity;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
@@ -35,19 +32,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-
-        $isValid = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-
-        if ($isValid->fails()) {
-            return response()->json($isValid->errors());
-        }
-
         $user = UserEntity::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -65,7 +51,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-
         return response()->json(['message' => 'Logged out successfully']);
     }
 }

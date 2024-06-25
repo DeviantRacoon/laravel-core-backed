@@ -2,18 +2,33 @@
 
 namespace App\Modules\Core\Domain\Repositories;
 
-use App\Modules\Core\Domain\Entities\UserEntity;
-use App\Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use App\Modules\Core\Application\Models\User;
+
 trait UserRepository
 {
-    public function getAll(): ?\Illuminate\Database\Eloquent\Collection
+
+    /* --------------------------------- SELECT --------------------------------- */
+
+    public function getAll(): ?Collection
     {
         return $this->all();
     }
 
-    public function whereEmail(string $email): ?UserEntity
+
+    /* --------------------------------- CREATE OR UPDATE --------------------------------- */
+
+    public function scopeUpdateUser($query, User $user)
     {
-        return $this->where('email', $email)->first();
+        $params = collect($user->toArray())->filter()->all();
+        return $query->where('id', $user->getId())->update($params);
+    }
+
+    /* ---------------------------------- WHERE --------------------------------- */
+
+    public function whereEmail(string $email)
+    {
+        return $this->where('email', $email);
     }
 
     public function whereUserId($userId)
@@ -21,8 +36,23 @@ trait UserRepository
         return $this->where('id', $userId);
     }
 
-    public function whereStatusId($statusId)
+    public function whereStatus($status)
     {
-        return $this->where('id', $statusId);
+        return $this->where('status', $status);
+    }
+
+    public function whereCreatedAt($createdAt)
+    {
+        return $this->where('created_at', $createdAt);
+    }
+
+    public function scopeBetweenCreatedAt($query, $from, $to)
+    {
+        return $query->whereBetween('created_at', [$from, $to]);
+    }
+
+    public function scopeWhereNameLike($query, $name)
+    {
+        return $query->where('name', 'like', '%' . $name . '%');
     }
 }

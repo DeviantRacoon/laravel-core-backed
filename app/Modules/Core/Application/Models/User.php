@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Core\Domain\Models;
+namespace App\Modules\Core\Application\Models;
 
-use Monolog\DateTimeImmutable;
+use \DateTimeImmutable;
 
 class User
 {
@@ -10,24 +10,22 @@ class User
     private ?int $id;
     private ?string $name;
     private ?string $email;
-    private ?string $email_verified_at;
     private ?string $password;
     private ?string $remember_token;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
-    private ?DateTimeImmutable  $updated_at;
+    private ?DateTimeImmutable $updated_at;
 
     public function __construct($data)
     {
-        $this->id = $data->id;
-        $this->name = $data->name;
-        $this->email = $data->email;
-        $this->email_verified_at = $data->email_verified_at;
-        $this->password = $data->password;
-        $this->remember_token = $data->remember_token;
-        $this->status = $data->status;
-        $this->created_at = $data->created_at;
-        $this->updated_at = $data->updated_at;
+        $this->id = $data->id ?? null;
+        $this->name = $data->name ?? null;
+        $this->email = $data->email ?? null;
+        $this->password = $data->password ?? null;
+        $this->remember_token = $data->remember_token ?? null;
+        $this->status = $data->status ?? null;
+        $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
+        $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
     }
 
 
@@ -62,18 +60,6 @@ class User
     {
         $this->email = $email;
     }
-
-
-    public function getEmailVerifiedAt(): ?string
-    {
-        return $this->email_verified_at;
-    }
-
-    public function setEmailVerifiedAt(?string $email_verified_at): void
-    {
-        $this->email_verified_at = $email_verified_at;
-    }
-
 
     public function getPassword(): ?string
     {
@@ -136,7 +122,6 @@ class User
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'email_verified_at' => $this->email_verified_at,
             'password' => $this->password,
             'remember_token' => $this->remember_token,
             'status' => $this->status,
