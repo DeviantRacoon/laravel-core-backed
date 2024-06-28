@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Core\Http\Validators\UserValidator;
+namespace App\Modules\Core\Http\Validators\RoleValidator;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateUserRequest extends FormRequest
+class CreateRoleRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,11 +15,8 @@ class UpdateUserRequest extends FormRequest
 
     public function rules()
     {
-        $userId = $this->input('id');
         return [
-            'id' => 'required|integer|exists:catalog_users,id',
-            'name' => 'unique:catalog_users,name,' . $userId,
-            'email' => 'email|unique:catalog_users,email,' . $userId,
+            'name' => 'unique:catalog_roles,name|min:3|max:20|required',
         ];
     }
 
@@ -42,14 +39,10 @@ class UpdateUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'id.required' => 'No se envió el campo id.',
-            'id.integer' => 'El id debe ser un valor numérico.',
-            'id.exists' => 'El id no existe.',
             'name.required' => 'El nombre es requerido.',
             'name.unique' => 'El nombre ya existe.',
-            'email.required' => 'El correo es requerido.',
-            'email.email' => 'El correo debe ser un correo válido.',
-            'email.unique' => 'El correo ya existe.',
+            'name.min' => 'El nombre debe tener un mínimo de 3 caracteres.',
+            'name.max' => 'El nombre debe tener un máximo de 20 caracteres.',
         ];
     }
 }

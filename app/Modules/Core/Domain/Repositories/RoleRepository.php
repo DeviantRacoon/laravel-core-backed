@@ -3,9 +3,9 @@
 namespace App\Modules\Core\Domain\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
-use App\Modules\Core\Application\Models\User;
+use App\Modules\Core\Application\Models\Role;
 
-trait UserRepository
+trait RoleRepository
 {
 
     /* --------------------------------- SELECT --------------------------------- */
@@ -18,16 +18,16 @@ trait UserRepository
 
     /* ---------------------------- CREATE OR UPDATE ---------------------------- */
 
-    public function scopeUpdateUser($query, User $user)
+    public function scopeCreateRole($query, Role $role)
     {
-        $params = collect($user->toArray())->filter()->all();
-        return $query->where('id', $user->getId())->update($params);
+        $params = collect($role->toArray())->filter()->all();
+        return $query->create($params);
     }
 
-    /* -------------------------- RELATIONSHIP METHODS -------------------------- */
-    
-    public function scopeWithRole($query) {
-        return $query->with('role');
+    public function scopeUpdateRole($query, Role $role)
+    {
+        $params = collect($role->toArray())->filter()->all();
+        return $query->where('id', $role->getId())->update($params);
     }
 
     /* ---------------------------------- WHERE --------------------------------- */
@@ -37,9 +37,9 @@ trait UserRepository
         return $this->where('email', $email);
     }
 
-    public function whereUserId($userId)
+    public function whereRoleId($roleId)
     {
-        return $this->where('id', $userId);
+        return $this->where('id', $roleId);
     }
 
     public function whereStatus($status)

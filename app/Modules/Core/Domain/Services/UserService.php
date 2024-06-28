@@ -28,8 +28,8 @@ class UserService
     {
         $userQuery = $this->userEntity
             ->whereUserId($userId)
+            ->withRole() 
             ->first();
-
         return new User((object)($userQuery->toArray()));
     }
 
@@ -67,5 +67,4 @@ class UserService
         $userQuery->updateUser($user);
         return new User((object)($userQuery->first()->toArray()));
     }
-
 }

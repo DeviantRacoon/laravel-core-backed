@@ -3,9 +3,8 @@
 namespace App\Modules\Core\Application\Models;
 
 use \DateTimeImmutable;
-use App\Modules\Core\Application\Models\Role;
 
-class User
+class Role
 {
     public const PENDING  = 1;
     public const ACTIVE   = 2;
@@ -14,10 +13,7 @@ class User
 
     private ?int $id;
     private ?string $name;
-    private ?string $email;
-    private ?string $password;
-    private ?string $remember_token;
-    private mixed $role;
+    private ?string $description;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
@@ -26,10 +22,7 @@ class User
     {
         $this->id = $data->id ?? null;
         $this->name = $data->name ?? null;
-        $this->email = $data->email ?? null;
-        $this->password = $data->password ?? null;
-        $this->remember_token = $data->remember_token ?? null;
-        $this->role = is_object($data->role) ? new Role((object)$data->role) ?? null : $data->role;
+        $this->description = $data->description ?? null;
         $this->status = $data->status ?? null;
         $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
         $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
@@ -57,50 +50,16 @@ class User
         $this->name = $name;
     }
 
-
-    public function getEmail(): ?string
+    public function getDescription(): ?string
     {
-        return $this->email;
+        return $this->description;
     }
 
-    public function setEmail(?string $email): void
+    public function setDescription(?string $description): void
     {
-        $this->email = $email;
+        $this->description = $description;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(?string $password): void
-    {
-        $this->password = $password;
-    }
-
-
-    public function getRememberToken(): ?string
-    {
-        return $this->remember_token;
-    }
-
-    public function setRememberToken(?string $remember_token): void
-    {
-        $this->remember_token = $remember_token;
-    }
-
-
-    public function getRole(): ?Role
-    {
-        return $this->role;
-    }
-
-    public function setRole(?Role $role): void
-    {
-        $this->role = $role;
-    }
-
-    
     public function getStatus(): ?int
     {
         return $this->status;
@@ -110,7 +69,6 @@ class User
     {
         $this->status = $status;
     }
-
 
     public function getCreatedAt(): ?DateTimeImmutable
     {
@@ -139,10 +97,7 @@ class User
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'remember_token' => $this->remember_token,
-            'role' => is_object($this->role) ? $this->role->toArray() : $this->role,
+            'description' => $this->description,
             'status' => $this->status,
             'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
             'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : null,
@@ -151,6 +106,6 @@ class User
 
     public function __toString(): string
     {
-        return "username: " . $this->name;
+        return $this->id;
     }
 }

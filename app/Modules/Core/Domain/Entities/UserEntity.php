@@ -10,13 +10,14 @@ use Illuminate\Notifications\Notifiable;
 
 class UserEntity extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, UserRepository; 
+    use HasApiTokens, HasFactory, Notifiable, UserRepository;
 
-    protected $table = 'users';
+    protected $table = 'catalog_users';
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
         'status',
     ];
 
@@ -24,6 +25,11 @@ class UserEntity extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(RoleEntity::class, 'role');
+    }
 
     protected function casts(): array
     {

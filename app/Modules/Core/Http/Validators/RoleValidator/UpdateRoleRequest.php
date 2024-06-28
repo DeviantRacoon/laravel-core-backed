@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Core\Http\Validators\UserValidator;
+namespace App\Modules\Core\Http\Validators\RoleValidator;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateUserRequest extends FormRequest
+class UpdateRoleRequest extends FormRequest
 {
     public function authorize()
     {
@@ -17,9 +17,9 @@ class UpdateUserRequest extends FormRequest
     {
         $userId = $this->input('id');
         return [
-            'id' => 'required|integer|exists:catalog_users,id',
-            'name' => 'unique:catalog_users,name,' . $userId,
-            'email' => 'email|unique:catalog_users,email,' . $userId,
+            'id' => 'required|integer|exists:catalog_roles,id',
+            'name' => 'unique:catalog_roles,name ' . $userId,
+            'description' => 'min:10|max:100',
         ];
     }
 
@@ -45,11 +45,9 @@ class UpdateUserRequest extends FormRequest
             'id.required' => 'No se envió el campo id.',
             'id.integer' => 'El id debe ser un valor numérico.',
             'id.exists' => 'El id no existe.',
-            'name.required' => 'El nombre es requerido.',
             'name.unique' => 'El nombre ya existe.',
-            'email.required' => 'El correo es requerido.',
-            'email.email' => 'El correo debe ser un correo válido.',
-            'email.unique' => 'El correo ya existe.',
+            'description.min' => 'La descripción debe tener un mínimo de 10 caracteres.',
+            'description.max' => 'La descripción debe tener un máximo de 100 caracteres.',
         ];
     }
 }
