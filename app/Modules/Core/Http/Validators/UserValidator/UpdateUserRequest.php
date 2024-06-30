@@ -15,11 +15,11 @@ class UpdateUserRequest extends FormRequest
 
     public function rules()
     {
-        $userId = $this->input('id');
+        $id = $this->input('id');
         return [
             'id' => 'required|integer|exists:catalog_users,id',
-            'name' => 'unique:catalog_users,name,' . $userId,
-            'email' => 'email|unique:catalog_users,email,' . $userId,
+            'name' => 'unique:catalog_users,name,' . $id,
+            'email' => 'email|unique:catalog_users,email,' . $id,
         ];
     }
 

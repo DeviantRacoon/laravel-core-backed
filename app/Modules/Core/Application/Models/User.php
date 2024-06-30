@@ -7,9 +7,9 @@ use App\Modules\Core\Application\Models\Role;
 
 class User
 {
-    public const PENDING  = 1;
-    public const ACTIVE   = 2;
-    public const INACTIVE = 3;
+    public const ACTIVE   = 1;
+    public const INACTIVE = 2;
+    public const PENDING  = 3;
     public const DELETED  = 99;
 
     private ?int $id;

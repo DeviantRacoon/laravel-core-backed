@@ -5,6 +5,9 @@ namespace App\Modules\Core\Domain\Repositories;
 use Illuminate\Database\Eloquent\Collection;
 use App\Modules\Core\Application\Models\Role;
 
+use App\Modules\Core\Domain\Entities\PermissionEntity;
+use App\Modules\Core\Application\Models\Permission;
+
 trait RoleRepository
 {
 
@@ -29,6 +32,31 @@ trait RoleRepository
         $params = collect($role->toArray())->filter()->all();
         return $query->where('id', $role->getId())->update($params);
     }
+
+
+    /* -------------------------- RELATIONSHIP METHODS -------------------------- */
+
+    public function scopeWithPermissions($query)
+    {
+        return $query->with(['permissions' => function ($queryWith) {
+            $queryWith->where('mixed_role_permissions.status', Permission::ACTIVE);
+        }]);
+    }
+
+    public function scopeAddPermission($query, $permission, $status)
+    {
+        $role = $query->first();
+        $existingPermission = $role->permissions()->where('permission', $permission->id)->first();
+
+        if ($existingPermission) {
+            $role->permissions()->updateExistingPivot($permission->id, ['status' => $status]);
+        } else {
+            $role->permissions()->attach($permission->id, ['status' => $status]);
+        }
+
+        return $role;
+    }
+
 
     /* ---------------------------------- WHERE --------------------------------- */
 

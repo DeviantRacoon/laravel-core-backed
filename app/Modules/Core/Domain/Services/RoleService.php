@@ -3,15 +3,18 @@
 namespace App\Modules\Core\Domain\Services;
 
 use App\Modules\Core\Domain\Entities\RoleEntity;
+use App\Modules\Core\Domain\Entities\PermissionEntity;
 use App\Modules\Core\Application\Models\Role;
 
 class RoleService
 {
     private $roleEntity;
+    private $permissionEntity;
 
-    public function __construct(RoleEntity $roleEntity)
+    public function __construct(RoleEntity $roleEntity, PermissionEntity $permissionEntity)
     {
         $this->roleEntity = $roleEntity;
+        $this->permissionEntity = $permissionEntity;
     }
 
     public function getAllRoles()
@@ -28,9 +31,9 @@ class RoleService
     {
         $roleQuery = $this->roleEntity
             ->whereRoleId($roleId)
+            ->WithPermissions()
             ->first();
-
-        return new role((object)($roleQuery->toArray()));
+        return new Role((object)($roleQuery->toArray()));
     }
 
     public function getRoleByParams($params)
@@ -55,24 +58,39 @@ class RoleService
 
         $Roles = [];
         foreach ($rolesQuery->get() as $role) {
-            $Roles[] = new role((object)($role->toArray()));
+            $Roles[] = new Role((object)($role->toArray()));
         }
 
         return $Roles;
     }
 
-    public function createRole(role $role)
+    public function addPermission($params)
+    {
+        $permission = $this->permissionEntity->wherePermissionId($params->permissionId)->first();
+        $role = $this->roleEntity->whereRoleId($params->roleId)->AddPermission($permission, $params->status);
+        return new Role((object)($role->first()->toArray()));
+    }
+
+    public function updatePermission($params)
+    {
+        $permission = $this->permissionEntity->wherePermissionId($params->permissionId)->first();
+        $role = $this->roleEntity->whereRoleId($params->roleId)->UpdatePermission($permission, $params->permissionId);
+        return new Role((object)($role->first()->toArray()));
+    }
+    
+
+    public function createRole(Role $role)
     {
         $roleQuery = $this->roleEntity->newQuery();
         $roleBuild = $roleQuery->createRole($role);
-        return new role((object)($roleBuild->toArray()));
+        return new Role((object)($roleBuild->toArray()));
     }
 
-    public function updateRole(role $role)
+    public function updateRole(Role $role)
     {
         $roleQuery = $this->roleEntity->newQuery();
         $roleQuery->updateRole($role);
-        return new role((object)($roleQuery->first()->toArray()));
+        return new Role((object)($roleQuery->first()->toArray()));
     }
 
 }

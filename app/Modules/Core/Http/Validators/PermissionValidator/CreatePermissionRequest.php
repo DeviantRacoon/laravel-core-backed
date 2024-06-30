@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Core\Http\Validators\RoleValidator;
+namespace App\Modules\Core\Http\Validators\PermissionValidator;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateRoleRequest extends FormRequest
+class CreatePermissionRequest extends FormRequest
 {
     public function authorize()
     {
@@ -15,11 +15,8 @@ class UpdateRoleRequest extends FormRequest
 
     public function rules()
     {
-        $id = $this->input('id');
         return [
-            'id' => 'required|integer|exists:catalog_roles,id',
-            'name' => 'unique:catalog_roles,name, ' . $id,
-            'description' => 'min:10|max:100',
+            'name' => 'unique:catalog_permissions,name|min:3|max:20|required',
         ];
     }
 
@@ -42,12 +39,10 @@ class UpdateRoleRequest extends FormRequest
     public function messages()
     {
         return [
-            'id.required' => 'No se envió el campo id.',
-            'id.integer' => 'El id debe ser un valor numérico.',
-            'id.exists' => 'El id no existe.',
+            'name.required' => 'El nombre es requerido.',
             'name.unique' => 'El nombre ya existe.',
-            'description.min' => 'La descripción debe tener un mínimo de 10 caracteres.',
-            'description.max' => 'La descripción debe tener un máximo de 100 caracteres.',
+            'name.min' => 'El nombre debe tener un mínimo de 3 caracteres.',
+            'name.max' => 'El nombre debe tener un máximo de 20 caracteres.',
         ];
     }
 }

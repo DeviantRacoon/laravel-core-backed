@@ -3,9 +3,8 @@
 namespace App\Modules\Core\Application\Models;
 
 use \DateTimeImmutable;
-use App\Modules\Core\Application\Models\Permission;
 
-class Role
+class Permission
 {
     public const ACTIVE   = 1;
     public const INACTIVE = 2;
@@ -15,7 +14,6 @@ class Role
     private ?int $id;
     private ?string $name;
     private ?string $description;
-    private ?array $permissions;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
@@ -25,10 +23,9 @@ class Role
         $this->id = $data->id ?? null;
         $this->name = $data->name ?? null;
         $this->description = $data->description ?? null;
-        $this->permissions = isset($data->permissions) ? array_map(fn ($permission) => new Permission((object)($permission)), $data->permissions) : [];
         $this->status = $data->status ?? null;
-        $this->created_at = isset($data->created_at) ? new DateTimeImmutable($data->created_at) : null;
-        $this->updated_at = isset($data->updated_at) ? new DateTimeImmutable($data->updated_at) : null;
+        $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
+        $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
     }
 
 
@@ -61,16 +58,6 @@ class Role
     public function setDescription(?string $description): void
     {
         $this->description = $description;
-    }
-
-    public function getPermission(): ?array
-    {
-        return $this->permissions;
-    }
-
-    public function setPermission(?array $permissions): void
-    {
-        $this->permissions = $permissions;
     }
 
     public function getStatus(): ?int
@@ -111,7 +98,6 @@ class Role
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'permissions' => $this->permissions ? array_map(fn ($permission) => $permission->toArray(), $this->permissions) : [],
             'status' => $this->status,
             'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
             'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : null,

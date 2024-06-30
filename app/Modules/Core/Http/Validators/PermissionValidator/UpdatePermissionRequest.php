@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Core\Http\Validators\RoleValidator;
+namespace App\Modules\Core\Http\Validators\PermissionValidator;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateRoleRequest extends FormRequest
+class UpdatePermissionRequest extends FormRequest
 {
     public function authorize()
     {
@@ -17,8 +17,8 @@ class UpdateRoleRequest extends FormRequest
     {
         $id = $this->input('id');
         return [
-            'id' => 'required|integer|exists:catalog_roles,id',
-            'name' => 'unique:catalog_roles,name, ' . $id,
+            'id' => 'required|integer|exists:catalog_permissions,id',
+            'name' => 'unique:catalog_permissions,name, ' . $id,
             'description' => 'min:10|max:100',
         ];
     }

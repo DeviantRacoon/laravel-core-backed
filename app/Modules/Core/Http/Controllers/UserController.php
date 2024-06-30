@@ -62,7 +62,7 @@ class UserController
             return response()->json([
                 'ok' => true,
                 'data' => $users,
-                'message' => "Se obtuvo el usuario correctamente",
+                'message' => "Se obtuvieron los usuarios correctamente",
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -82,7 +82,7 @@ class UserController
             return response()->json([
                 'ok' => true,
                 'data' => $users,
-                'message' => "Se obtuvo el usuario correctamente",
+                'message' => "Se actualizo el usuario correctamente",
             ]);
         } catch (\Throwable $th) {
             return response()->json([

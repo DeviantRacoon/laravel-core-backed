@@ -31,6 +31,22 @@ class RoleUseCase
         return array_map(fn($model) => $model->toArray(), $roleModels);
     }
 
+    public function addManyPermission(array $params)
+    {
+        foreach ($params as $param) {
+            $roleModels[] = $this->roleService->addPermission((object)($param));
+        }
+        return array_map(fn($model) => $model->toArray(), $roleModels);
+    }
+
+    public function updateRolPermission(array $params)
+    {
+        foreach ($params as $param) {
+            $roleModels[] = $this->roleService->updatePermission((object)($param));
+        }
+        return array_map(fn($model) => $model->toArray(), $roleModels);
+    }
+
     public function createRole($params)
     {
         $roleModel = $this->roleService->createRole($params);

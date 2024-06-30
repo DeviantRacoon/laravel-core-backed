@@ -28,9 +28,10 @@ return new class extends Migration
         });
 
         Schema::create('mixed_role_permissions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('role_id')->references('id')->on('catalog_roles')->onDelete('cascade');
-            $table->foreignId('permission_id')->references('id')->on('catalog_permissions');
+            // $table->id();
+            $table->foreignId('role')->constrained('catalog_roles')->onDelete('cascade');
+            $table->foreignId('permission')->constrained('catalog_permissions')->onDelete('cascade');
+            $table->primary(['role', 'permission']);
             $table->integer('status')->default(1);
             $table->timestamps();
         });

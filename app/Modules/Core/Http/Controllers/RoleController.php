@@ -5,8 +5,10 @@ namespace App\Modules\Core\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Modules\Core\Application\Models\Role;
 use App\Modules\Core\Application\UseCases\RoleUseCase;
+
 use App\Modules\Core\Http\Validators\RoleValidator\CreateRoleRequest;
 use App\Modules\Core\Http\Validators\RoleValidator\UpdateRoleRequest;
+use App\Modules\Core\Http\Validators\RoleValidator\AddPermissionRoleRequest;
 
 class RoleController
 {
@@ -63,7 +65,25 @@ class RoleController
             return response()->json([
                 'ok' => true,
                 'data' => $roles,
-                'message' => "Se obtuvo el rol correctamente",
+                'message' => "Se obtuvieron los roles correctamente",
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'ok' => false,
+                'data' => null,
+                'errors' => [$th->getMessage()],
+            ]);
+        }
+    }
+
+    public function addManyPermission(AddPermissionRoleRequest $request)
+    {
+        try {
+            $roles = $this->roleUseCase->addManyPermission($request->all());
+            return response()->json([
+                'ok' => true,
+                'data' => $roles,
+                'message' => "Se han actualizado los permisos correctamente",
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -83,7 +103,7 @@ class RoleController
             return response()->json([
                 'ok' => true,
                 'data' => $roles,
-                'message' => "Se obtuvo el rol correctamente",
+                'message' => "Se creo el rol correctamente",
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -103,7 +123,7 @@ class RoleController
             return response()->json([
                 'ok' => true,
                 'data' => $roles,
-                'message' => "Se obtuvo el rol correctamente",
+                'message' => "Se actualizo el rol correctamente",
             ]);
         } catch (\Throwable $th) {
             return response()->json([
