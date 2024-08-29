@@ -31,6 +31,11 @@ class UserEntity extends Authenticatable
         return $this->belongsTo(RoleEntity::class, 'role');
     }
 
+    public function person()
+    {
+        return $this->belongsTo(PersonEntity::class);
+    }
+
     protected function casts(): array
     {
         return [

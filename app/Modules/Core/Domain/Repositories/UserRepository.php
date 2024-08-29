@@ -21,7 +21,7 @@ trait UserRepository
     public function scopeUpdateUser($query, User $user)
     {
         $params = collect($user->toArray())->filter()->all();
-        return $query->where('id', $user->getId())->update($params);
+        return $query->where('id', $user->toArray()['id'])->update($params);
     }
 
     /* -------------------------- RELATIONSHIP METHODS -------------------------- */

@@ -27,7 +27,7 @@ trait PermissionRepository
     public function scopeUpdatePermission($query, Permission $permission)
     {
         $params = collect($permission->toArray())->filter()->all();
-        return $query->where('id', $permission->getId())->update($params);
+        return $query->where('id', $permission->toArray()->id)->update($params);
     }
     
 

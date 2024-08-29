@@ -30,7 +30,7 @@ trait RoleRepository
     public function scopeUpdateRole($query, Role $role)
     {
         $params = collect($role->toArray())->filter()->all();
-        return $query->where('id', $role->getId())->update($params);
+        return $query->where('id', $role->toArray()['id'])->update($params);
     }
 
 
