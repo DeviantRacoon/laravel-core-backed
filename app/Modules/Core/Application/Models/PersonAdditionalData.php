@@ -2,6 +2,8 @@
 
 namespace App\Modules\Core\Application\Models;
 use \DateTimeImmutable;
+use App\Modules\Core\Application\Models\PersonAddress;
+
 
 class PersonAdditionalData
 {
@@ -16,6 +18,7 @@ class PersonAdditionalData
     private ?string $photo;
     private ?int $address_id;
     private ?int $person_id;
+    private ?array $personAddress;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
@@ -28,6 +31,7 @@ class PersonAdditionalData
         $this->photo = $data->photo ?? null;
         $this->address_id = $data->address_id ?? null;
         $this->person_id = $data->person_id ?? null;
+        $this->personAddress = isset($data->addresses) ? array_map(fn($address) => new PersonAddress((object)($address)), $data->addresses) : [];
         $this->status = $data->status ?? null;
         $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
         $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
@@ -42,6 +46,7 @@ class PersonAdditionalData
             'photo' => $this->photo,
             'address_id' => $this->address_id,
             'person_id' => $this->person_id,
+            'personAddress' => $this->personAddress ? array_map(fn ($address) => $address->toArray(), $this->personAddress) : [],
             'status' => $this->status,
             'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
             'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : null,

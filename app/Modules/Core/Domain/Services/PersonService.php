@@ -28,12 +28,14 @@ class PersonService
     {
         $personQuery = $this->personEntity
             ->wherePersonId($personId)
-            ->withRole() 
+            ->withPersonAdditionalData()
+            ->withPersonAdditionalDataAndAddresses()
             ->first();
+        // dd($personQuery->toArray());
         return new Person((object)($personQuery->toArray()));
     }
 
-    public function getPersonByParams($params)
+    public function getPersonsByParams($params)
     {
         $personsQuery = $this->personEntity->newQuery();
 
@@ -53,12 +55,12 @@ class PersonService
             $personsQuery->whereStatus($params->status);
         }
 
-        $person = [];
+        $persons = [];
         foreach ($personsQuery->get() as $person) {
-            $person[] = new Person((object)($person->toArray()));
+            $persons[] = new Person((object)($person->toArray()));
         }
 
-        return $person;
+        return $persons;
     }
 
     public function updatePerson(Person $person)
@@ -67,4 +69,12 @@ class PersonService
         $personQuery->updatePerson($person);
         return new Person((object)($personQuery->first()->toArray()));
     }
+
+    public function createPerson(Person $person)
+    {
+        $roleQuery = $this->personEntity->newQuery();
+        $roleBuild = $roleQuery->createPerson($person);
+        return new Person((object)($roleBuild->toArray()));
+    }
+
 }

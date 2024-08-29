@@ -5,8 +5,7 @@ namespace App\Modules\Core\Domain\Entities;
 use App\Modules\Core\Domain\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Modules\Core\Domain\Entities\PersonEntity;
-use App\Modules\Core\Domain\Entities\PersonAdditionalDataEntity as AdditionalData;
+use App\Modules\Core\Domain\Entities\PersonAddressEntity;
 
 class PersonAdditionalDataEntity extends Model
 {
@@ -22,14 +21,9 @@ class PersonAdditionalDataEntity extends Model
         'status',
     ];
 
-    public function person()
-    {
-        return $this->belongsTo(PersonEntity::class, 'person_id', 'id');
-    }
-
     public function addresses()
     {
-        return $this->hasMany(AdditionalData::class, 'address_id', 'id');
+        return $this->hasMany(PersonAddressEntity::class, 'id', 'address_id');
     }
 }
 

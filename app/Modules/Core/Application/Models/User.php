@@ -42,8 +42,8 @@ class User
             'password' => $this->password,
             'role' => is_object($this->role) ? $this->role->toArray() : $this->role,
             'status' => $this->status,
-            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : null,
+            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d\TH:i:s.uP') : null,
+            'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d\TH:i:s.uP') : null,
         ];
     }
 

@@ -15,7 +15,7 @@ class PersonEntity extends Model
         'firstName',
         'middleName',
         'lastName',
-        'secondName',
+        'secondLastName',
         'gender',
         'birthDate',
     ];
@@ -24,4 +24,14 @@ class PersonEntity extends Model
     {
         return $this->belongsTo(UserEntity::class);
     }
+
+    public function additionalData()
+    {
+        return $this->hasOne(PersonAdditionalDataEntity::class, 'person_id', 'id');
+    }
+
+    // public function addresses()
+    // {
+    //     return $this->hasMany(PersonAdditionalDataEntity::class, 'address_id', 'id');
+    // }
 }

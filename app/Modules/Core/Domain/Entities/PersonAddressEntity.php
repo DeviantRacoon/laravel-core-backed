@@ -26,6 +26,6 @@ class PersonAddressEntity extends Model
 
     public function additionalData()
     {
-        return $this->belongsTo(PersonAdditionalDataEntity::class, 'address_id', 'id');
+        return $this->belongsTo(PersonAdditionalDataEntity::class , 'address_id', 'id');
     }
 }

@@ -29,6 +29,20 @@ trait PersonRepository
         $params = collect($person->toArray())->filter()->all();
         return $query->where('id', $person->toArray()->id)->update($params);
     }
+
+
+    /* ------------------------------ RELATIONSHIPS ----------------------------- */
+
+    
+    public function scopeWithPersonAdditionalData($query)
+    {
+        return $query->with('additionalData');
+    }
+
+    public function scopeWithPersonAdditionalDataAndAddresses($query)
+    {
+        return $query->with('additionalData.addresses');
+    }
     
 
     /* ---------------------------------- WHERE --------------------------------- */
@@ -51,6 +65,11 @@ trait PersonRepository
     public function scopeWhereLikeSecondLastName($query, string $lastName)
     {
         return $this->$query->where('lastName', 'like', '%' . $lastName . '%');
+    }
+
+    public function wherePersonId($personId)
+    {
+        return $this->where('id', $personId);
     }
 
     public function whereStatus($status)
