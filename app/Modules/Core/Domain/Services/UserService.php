@@ -9,9 +9,9 @@ class UserService
 {
     private $userEntity;
 
-    public function __construct(UserEntity $userEntity)
+    public function __construct()
     {
-        $this->userEntity = $userEntity;
+        $this->userEntity = new UserEntity();
     }
 
     public function getAllUsers()

@@ -18,7 +18,7 @@ class PersonAdditionalData
     private ?string $photo;
     private ?int $address_id;
     private ?int $person_id;
-    private ?array $personAddress;
+    public ?array $personAddress;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;

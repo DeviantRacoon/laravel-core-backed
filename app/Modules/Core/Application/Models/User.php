@@ -2,49 +2,123 @@
 
 namespace App\Modules\Core\Application\Models;
 
-use \DateTimeImmutable;
+use DateTimeImmutable;
 use App\Modules\Core\Application\Models\Role;
+use App\Modules\Core\Application\Mappers\UserMapper;
 
-class User
+class User extends UserMapper
 {
-    public const ACTIVE   = 1;
+    public const ACTIVE = 1;
     public const INACTIVE = 2;
-    public const PENDING  = 3;
-    public const DELETED  = 99;
+    public const PENDING = 3;
+    public const DELETED = 99;
 
     private ?int $id;
     private ?string $name;
     private ?string $email;
     private ?string $password;
-    private mixed $role;
+    private ?Role $role;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
 
-    public function __construct($data)
+    public function __construct(object $data = null)
     {
-        $this->id = $data->id ?? null;
-        $this->name = $data->name ?? null;
-        $this->email = $data->email ?? null;
-        $this->password = $data->password ?? null;
-        $this->role = is_object($data->role) ? new Role((object)$data->role) ?? null : $data->role;
-        $this->status = $data->status ?? null;
-        $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
-        $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
+        if ($data) $this->assignment($this, $data); 
     }
 
-    public function toArray(): object
+
+    /* --------------------------------- GETTER --------------------------------- */
+
+    public function getId(): ?int
     {
-        return (object)[
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'role' => is_object($this->role) ? $this->role->toArray() : $this->role,
-            'status' => $this->status,
-            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d\TH:i:s.uP') : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d\TH:i:s.uP') : null,
-        ];
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getEmail(): ?string
+    { 
+        return $this->email;
+    }
+
+    public function getPassword(): ?string
+    { 
+        return $this->password;
+    }
+
+    public function getRole(): ?Role
+    { 
+        return $this->role;
+    }
+
+    public function getStatus(): ?int
+    { 
+        return $this->status;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    { 
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    { 
+        return $this->updated_at;
+    }
+
+
+    /* --------------------------------- SETTER --------------------------------- */
+
+    public function setId(?int $id): void
+    { 
+        $this->id = $id;
+    }
+
+    public function setName(?string $name): void
+    { 
+        $this->name = $name;
+    }
+
+    public function setEmail(?string $email): void
+    { 
+        $this->email = $email;
+    }
+
+    public function setPassword(?string $password): void
+    { 
+        $this->password = $password;
+    }
+
+    public function setRole(?Role $role): void
+    {
+        $this->role = $role;
+    }
+    
+    public function setStatus(?int $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $created_at): void
+    { 
+        $this->created_at = $created_at;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): void
+    { 
+        $this->updated_at = $updated_at;
+    }
+
+
+    /* --------------------------------- OTHERS --------------------------------- */
+
+    public function toArray(): array
+    {
+        return $this->mapToArray($this);
     }
 
     public function __toString(): string

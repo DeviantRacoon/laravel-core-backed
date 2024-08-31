@@ -19,7 +19,7 @@ class PersonService
         $personsQuery = $this->personEntity->get();
         $persons = [];
         foreach ($personsQuery as $person) {
-            $persons[] = new Person((object)($person->toArray()));
+            $persons[] = new Person((object) ($person->toArray()));
         }
         return $persons;
     }
@@ -31,8 +31,7 @@ class PersonService
             ->withPersonAdditionalData()
             ->withPersonAdditionalDataAndAddresses()
             ->first();
-        // dd($personQuery->toArray());
-        return new Person((object)($personQuery->toArray()));
+        return new Person((object) ($personQuery->toArray()));
     }
 
     public function getPersonsByParams($params)
@@ -57,7 +56,7 @@ class PersonService
 
         $persons = [];
         foreach ($personsQuery->get() as $person) {
-            $persons[] = new Person((object)($person->toArray()));
+            $persons[] = new Person((object) ($person->toArray()));
         }
 
         return $persons;
@@ -67,7 +66,7 @@ class PersonService
     {
         $personQuery = $this->personEntity->newQuery();
         $personQuery->updatePerson($person);
-        return new Person((object)($personQuery->first()->toArray()));
+        return new Person((object) ($personQuery->first()->toArray()));
     }
 
     public function createPerson(Person $person)
@@ -76,5 +75,26 @@ class PersonService
         $roleBuild = $roleQuery->createPerson($person);
         return new Person((object)($roleBuild->toArray()));
     }
+
+    // public function createPerson(Person $person)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+    //         $personQuery = $this->personEntity->newQuery();
+    //         $personBuild = $personQuery->createPerson($person);
+    //         $personAdditionalData = $this->personEntity->newQuery()->createPersonAdditionalData($personBuild);
+
+    //         foreach ($person->additionalData->personAddress as $address) {
+    //             $this->personEntity->newQuery()->createPersonAddress($personAdditionalData, $address);
+    //         }
+
+    //         DB::commit();
+    //         return new Person((object) ($personBuild->toArray()));
+    //     } catch (\Throwable $th) {
+    //         DB::rollBack();
+    //         throw $th;
+    //     }
+    // }
+
 
 }
