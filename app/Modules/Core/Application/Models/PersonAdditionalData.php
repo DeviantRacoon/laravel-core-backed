@@ -2,10 +2,9 @@
 
 namespace App\Modules\Core\Application\Models;
 use \DateTimeImmutable;
-use App\Modules\Core\Application\Models\PersonAddress;
+use App\Modules\Core\Application\Mappers\PersonAdditionalDataMapper;
 
-
-class PersonAdditionalData
+class PersonAdditionalData extends PersonAdditionalDataMapper
 {
     public const ACTIVE   = 1;
     public const INACTIVE = 2;
@@ -16,41 +15,113 @@ class PersonAdditionalData
     private ?string $curp;
     private ?string $cellphone;
     private ?string $photo;
-    private ?int $address_id;
-    private ?int $person_id;
-    public ?array $personAddress;
+    private mixed $addresses;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
 
-    public function __construct($data)
+    public function __construct(object $data = null)
     {
-        $this->id = $data->id ?? null;
-        $this->curp = $data->curp ?? null;
-        $this->cellphone = $data->cellphone ?? null;
-        $this->photo = $data->photo ?? null;
-        $this->address_id = $data->address_id ?? null;
-        $this->person_id = $data->person_id ?? null;
-        $this->personAddress = isset($data->addresses) ? array_map(fn($address) => new PersonAddress((object)($address)), $data->addresses) : [];
-        $this->status = $data->status ?? null;
-        $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
-        $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
+        if ($data) $this->assignment($this, $data); 
     }
 
-    public function toArray(): object
+
+    /* --------------------------------- GETTER --------------------------------- */
+
+    public function getId(): ?int  
     {
-        return (object)[
-            'id' => $this->id,
-            'curp' => $this->curp,
-            'cellphone' => $this->cellphone,
-            'photo' => $this->photo,
-            'address_id' => $this->address_id,
-            'person_id' => $this->person_id,
-            'personAddress' => $this->personAddress ? array_map(fn ($address) => $address->toArray(), $this->personAddress) : [],
-            'status' => $this->status,
-            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : null,
-        ];
+        return $this->id;
+    }
+
+    public function getCurp(): ?string
+    {
+        return $this->curp;
+    }
+
+    public function getCellphone(): ?string
+    {
+        return $this->cellphone;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function getAddresses(): mixed
+    {
+        return $this->addresses;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+
+    /* --------------------------------- SETTER --------------------------------- */
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setCurp(?string $curp): void
+    {
+        $this->curp = $curp;
+    }
+
+    public function setCellphone(?string $cellphone): void
+    {
+        $this->cellphone = $cellphone;
+    }
+
+    public function setPhoto(?string $photo): void
+    {
+        $this->photo = $photo;
+    }
+
+    public function setAddresses(mixed $addresses): void
+    {
+        $this->addresses = $addresses;
+    }
+
+    public function setStatus(?int $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): void
+    {
+        $this->updated_at = $updated_at;
+    }
+
+
+    /* --------------------------------- OTHERS --------------------------------- */
+
+    public function toArray(): array
+    {
+        return $this->mapToArray($this);
+    }  
+
+    public function arrayAddresses(): array
+    {
+        return $this->mapToArrayAddresses($this);
     }
 
     public function __toString(): string

@@ -30,8 +30,8 @@ class PersonEntity extends Model
         return $this->hasOne(PersonAdditionalDataEntity::class, 'person_id', 'id');
     }
 
-    // public function addresses()
-    // {
-    //     return $this->hasMany(PersonAdditionalDataEntity::class, 'address_id', 'id');
-    // }
+    public function addresses()
+    {
+        return $this->hasMany(PersonAddressEntity::class, 'person_additional_data_id', 'id');
+    }
 }

@@ -3,13 +3,14 @@
 namespace App\Modules\Core\Application\Models;
 
 use \DateTimeImmutable;
+use App\Modules\Core\Application\Mappers\PermissionMapper;
 
-class Permission
+class Permission extends PermissionMapper
 {
-    public const ACTIVE   = 1;
+    public const ACTIVE = 1;
     public const INACTIVE = 2;
-    public const PENDING  = 3;
-    public const DELETED  = 99;
+    public const PENDING = 3;
+    public const DELETED = 99;
 
     private ?int $id;
     private ?string $name;
@@ -18,30 +19,87 @@ class Permission
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
 
-    public function __construct($data)
+    public function __construct($data = null)
     {
-        $this->id = $data->id ?? null;
-        $this->name = $data->name ?? null;
-        $this->description = $data->description ?? null;
-        $this->status = $data->status ?? null;
-        $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
-        $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
+        if ($data) $this->assignment($this, $data);
     }
 
-    public function toArray(): object
+
+    /* --------------------------------- GETTER --------------------------------- */
+
+    public function getId(): ?int
     {
-        return ((object)[
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'status' => $this->status,
-            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : null,
-        ]);
+        return $this->id;
     }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+
+    /* --------------------------------- SETTER --------------------------------- */
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setStatus(?int $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): void
+    {
+        $this->updated_at = $updated_at;
+    }
+
+
+    /* --------------------------------- OTHERS --------------------------------- */
+
+    public function toArray(): array
+    {
+        return $this->mapToArray($this);
+    }  
 
     public function __toString(): string
     {
-        return $this->id;
+        return (string) $this->id;
     }
 }

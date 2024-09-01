@@ -22,11 +22,12 @@ return new class extends Migration
 
         Schema::create('catalog_person_address', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('person_additional_data_id')->constrained('catalog_person_additional_data')->onDelete('cascade');
             $table->string('street');
             $table->string('exteriorNumber');
             $table->string('interiorNumber')->nullable();
             $table->string('neighborhood');
-            $table->string('address_reference')->nullable();
+            $table->string('addressReference')->nullable();
             $table->string('municipality');
             $table->string('state');
             $table->string('country');
@@ -39,7 +40,6 @@ return new class extends Migration
             $table->id();
             $table->string('curp');
             $table->string('cellphone');
-            $table->foreignId('address_id')->constrained('catalog_person_address')->onDelete('cascade');
             $table->string('photo')->nullable();
             $table->foreignId('person_id')->constrained('catalog_persons')->onDelete('cascade');
             $table->integer('status')->default(1);

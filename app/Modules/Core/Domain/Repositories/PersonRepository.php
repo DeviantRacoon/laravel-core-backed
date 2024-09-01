@@ -21,19 +21,47 @@ trait PersonRepository
     public function scopeCreatePerson($query, Person $person)
     {
         $params = collect($person->toArray())->filter()->all();
-        return $query->create($params);
+        $personEntity = $query->create($params);
+
+        $addresses = $person->getAdditionalData()->arrayAddresses();
+        $addressesParams = array_map(fn($address) => collect($address)->filter()->all(), $addresses);
+
+        $additionalDataParams = collect($person->getAdditionalData()->toArray())->filter()->all();
+
+        $personAdditionalData = $personEntity->additionalData()->create($additionalDataParams);
+        $personAdditionalData->addresses()->createMany($addressesParams);
+
+        return $personEntity;
     }
+
 
     public function scopeUpdatePerson($query, Person $person)
     {
-        $params = collect($person->toArray())->filter()->all();
-        return $query->where('id', $person->toArray()->id)->update($params);
+        $personParams = collect($person->toArray())->filter()->all();
+        unset($personParams['additionalData']);
+
+        $additionalDataParams = collect($person->getAdditionalData()->toArray())->filter()->all();
+        unset($additionalDataParams['addresses']);
+
+        $addresses = $person->getAdditionalData()->arrayAddresses();
+        $addressesParams = array_map(fn($address) => collect($address)->filter()->all(), $addresses);
+
+        $query->where('id', $person->getId())->update($personParams);
+        $personEntity = $query->whereId($person->getId())->first();
+
+        $personEntity->additionalData()->update($additionalDataParams);
+
+        foreach ($addressesParams as $address) {
+            $personEntity->additionalData->addresses()->updateOrCreate(["id" => $address["id"] ?? null], $address);
+        }
+        
+        return $personEntity;
     }
 
 
     /* ------------------------------ RELATIONSHIPS ----------------------------- */
 
-    
+
     public function scopeWithPersonAdditionalData($query)
     {
         return $query->with('additionalData');
@@ -43,7 +71,7 @@ trait PersonRepository
     {
         return $query->with('additionalData.addresses');
     }
-    
+
 
     /* ---------------------------------- WHERE --------------------------------- */
 

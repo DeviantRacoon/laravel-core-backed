@@ -85,7 +85,7 @@ class UserMapper
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
-            'role' => $user->getRole(),
+            'role' => $user->getRole() ? $user->getRole()->toArray() : $user->getRole(),
             'status' => $user->getStatus(),
             'created_at' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d\TH:i:s.uP') : null,
             'updated_at' => $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d\TH:i:s.uP') : null,

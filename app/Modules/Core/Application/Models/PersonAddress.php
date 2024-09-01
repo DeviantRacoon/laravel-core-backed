@@ -2,8 +2,9 @@
 
 namespace App\Modules\Core\Application\Models;
 use \DateTimeImmutable;
+use App\Modules\Core\Application\Mappers\PersonAddressMapper;
 
-class PersonAddress
+class PersonAddress extends PersonAddressMapper
 {
     public const ACTIVE   = 1;
     public const INACTIVE = 2;
@@ -24,41 +25,152 @@ class PersonAddress
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
 
-    public function __construct($data)
+    public function __construct(object $data = null)
     {
-        $this->id = $data->id ?? null;
-        $this->street = $data->street ?? null;
-        $this->exteriorNumber = $data->exteriorNumber ?? null;
-        $this->interiorNumber = $data->interiorNumber ?? null;
-        $this->neighborhood = $data->neighborhood ?? null;
-        $this->addressReference = $data->addressReference ?? null;
-        $this->municipality = $data->municipality ?? null;
-        $this->state = $data->state ?? null;
-        $this->country = $data->country ?? null;
-        $this->postalCode = $data->postalCode ?? null;
-        $this->status = $data->status ?? null;
-        $this->created_at = $data->created_at ? new DateTimeImmutable($data->created_at) : null;
-        $this->updated_at = $data->updated_at ? new DateTimeImmutable($data->updated_at) : null;
+        if ($data) $this->assignment($this, $data); 
     }
 
-    public function toArray(): object
+
+    /* --------------------------------- GETTER --------------------------------- */
+
+    public function getId(): ?int
     {
-        return (object)[
-            'id' => $this->id,
-            'street' => $this->street,
-            'exteriorNumber' => $this->exteriorNumber,
-            'interiorNumber' => $this->interiorNumber,
-            'neighborhood' => $this->neighborhood,
-            'addressReference' => $this->addressReference,
-            'municipality' => $this->municipality,
-            'state' => $this->state,
-            'country' => $this->country,
-            'postalCode' => $this->postalCode,
-            'status' => $this->status,
-            'created_at' => $this->created_at ? $this->created_at->format('Y-m-d H:i:s') : null,
-            'updated_at' => $this->updated_at ? $this->updated_at->format('Y-m-d H:i:s') : null,
-        ];
+        return $this->id;
     }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function getExteriorNumber(): ?string
+    {
+        return $this->exteriorNumber;
+    }
+
+    public function getInteriorNumber(): ?string
+    {
+        return $this->interiorNumber;
+    }
+
+    public function getNeighborhood(): ?string
+    {
+        return $this->neighborhood;
+    }
+
+    public function getAddressReference(): ?string
+    {
+        return $this->addressReference;
+    }
+
+    public function getMunicipality(): ?string
+    {
+        return $this->municipality;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+
+    /* --------------------------------- SETTER --------------------------------- */
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setStreet(?string $street): void
+    {
+        $this->street = $street;
+    }
+
+    public function setExteriorNumber(?string $exteriorNumber): void
+    {
+        $this->exteriorNumber = $exteriorNumber;
+    }
+
+    public function setInteriorNumber(?string $interiorNumber): void
+    {
+        $this->interiorNumber = $interiorNumber;
+    }
+
+    public function setNeighborhood(?string $neighborhood): void
+    {
+        $this->neighborhood = $neighborhood;
+    }
+
+    public function setAddressReference(?string $addressReference): void
+    {
+        $this->addressReference = $addressReference;
+    }
+
+    public function setMunicipality(?string $municipality): void
+    {
+        $this->municipality = $municipality;
+    }
+
+    public function setState(?string $state): void
+    {
+        $this->state = $state;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
+    }
+
+    public function setPostalCode(?string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
+    }
+
+    public function setStatus(?int $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): void
+    {
+        $this->updated_at = $updated_at;
+    }
+
+
+    public function toArray(): array
+    {
+        return $this->mapToArray($this);
+    }  
 
     public function __toString(): string
     {

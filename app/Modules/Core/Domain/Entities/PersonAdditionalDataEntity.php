@@ -15,7 +15,6 @@ class PersonAdditionalDataEntity extends Model
     protected $fillable = [
         'curp',
         'cellphone',
-        'address_id',
         'photo',
         'person_id',
         'status',
@@ -23,7 +22,7 @@ class PersonAdditionalDataEntity extends Model
 
     public function addresses()
     {
-        return $this->hasMany(PersonAddressEntity::class, 'id', 'address_id');
+        return $this->hasMany(PersonAddressEntity::class, 'person_additional_data_id', 'id');
     }
 }
 

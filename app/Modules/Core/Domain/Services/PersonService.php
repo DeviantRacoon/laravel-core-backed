@@ -4,6 +4,7 @@ namespace App\Modules\Core\Domain\Services;
 
 use App\Modules\Core\Domain\Entities\PersonEntity;
 use App\Modules\Core\Application\Models\Person;
+use Illuminate\Support\Facades\DB;
 
 class PersonService
 {
@@ -30,7 +31,7 @@ class PersonService
             ->wherePersonId($personId)
             ->withPersonAdditionalData()
             ->withPersonAdditionalDataAndAddresses()
-            ->first();
+            ->firstOrFail();
         return new Person((object) ($personQuery->toArray()));
     }
 
@@ -71,30 +72,19 @@ class PersonService
 
     public function createPerson(Person $person)
     {
-        $roleQuery = $this->personEntity->newQuery();
-        $roleBuild = $roleQuery->createPerson($person);
-        return new Person((object)($roleBuild->toArray()));
+        try {
+            DB::beginTransaction();
+
+            $personQuery = $this->personEntity->newQuery();
+            $personBuild = $personQuery->createPerson($person);
+
+            DB::commit();
+            return new Person((object) ($personBuild->toArray()));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
-
-    // public function createPerson(Person $person)
-    // {
-    //     try {
-    //         DB::beginTransaction();
-    //         $personQuery = $this->personEntity->newQuery();
-    //         $personBuild = $personQuery->createPerson($person);
-    //         $personAdditionalData = $this->personEntity->newQuery()->createPersonAdditionalData($personBuild);
-
-    //         foreach ($person->additionalData->personAddress as $address) {
-    //             $this->personEntity->newQuery()->createPersonAddress($personAdditionalData, $address);
-    //         }
-
-    //         DB::commit();
-    //         return new Person((object) ($personBuild->toArray()));
-    //     } catch (\Throwable $th) {
-    //         DB::rollBack();
-    //         throw $th;
-    //     }
-    // }
 
 
 }

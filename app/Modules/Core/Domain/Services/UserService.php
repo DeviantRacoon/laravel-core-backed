@@ -30,6 +30,7 @@ class UserService
             ->whereUserId($userId)
             ->withRole() 
             ->first();
+        // dd($userQuery->toArray());
         return new User((object)($userQuery->toArray()));
     }
 

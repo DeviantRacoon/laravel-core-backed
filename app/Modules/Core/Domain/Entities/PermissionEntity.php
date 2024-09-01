@@ -24,6 +24,9 @@ class PermissionEntity extends Model
     {
         return $this->belongsToMany(RoleEntity::class, 'mixed_role_permissions', 'permission', 'role');
     }
-    
+
+    protected $hidden = [
+        'pivot',
+    ];
     
 }

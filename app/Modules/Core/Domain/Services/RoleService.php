@@ -33,6 +33,7 @@ class RoleService
             ->whereRoleId($roleId)
             ->WithPermissions()
             ->first();
+        // dd($roleQuery->toArray());
         return new Role((object)($roleQuery->toArray()));
     }
 

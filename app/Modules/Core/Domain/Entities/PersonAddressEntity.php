@@ -12,11 +12,12 @@ class PersonAddressEntity extends Model
     protected $table = 'catalog_person_address';
 
     protected $fillable = [
+        'person_additional_data_id',
         'street',
         'exteriorNumber',
         'interiorNumber',
         'neighborhood',
-        'address_reference',
+        'addressReference',
         'municipality',
         'state',
         'country',
@@ -26,6 +27,6 @@ class PersonAddressEntity extends Model
 
     public function additionalData()
     {
-        return $this->belongsTo(PersonAdditionalDataEntity::class , 'address_id', 'id');
+        return $this->belongsTo(PersonAdditionalDataEntity::class , 'id', 'person_additional_data_id');
     }
 }
