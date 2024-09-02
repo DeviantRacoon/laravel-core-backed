@@ -12,7 +12,7 @@ use App\Modules\Core\Http\Validators\AuthValidator\RegisterRequest;
 
 use App\Modules\Core\Domain\Entities\UserEntity;
 
-class AuthController extends Controller
+class AuthController
 {
     public function login(LoginRequest $request)
     {
