@@ -7,7 +7,7 @@ USE App\Modules\Core\Application\Models\PersonAdditionalData;
 
 class PersonMapper
 {
-    public function assignment(Person $person, object $data): void
+    public function assignment(Person $person, $data): void
     {
         if (isset($data->id)) {
             $person->setId($data->id);

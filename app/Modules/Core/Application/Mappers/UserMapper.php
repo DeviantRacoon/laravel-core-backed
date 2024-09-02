@@ -4,6 +4,7 @@ namespace App\Modules\Core\Application\Mappers;
 
 use App\Modules\Core\Application\Models\User;
 use App\Modules\Core\Application\Models\Role;
+use App\Modules\Core\Application\Models\Person;
 
 class UserMapper
 {
@@ -38,11 +39,16 @@ class UserMapper
 
 
         if (isset($data->role)) {
-            $roleObject = is_array($data->role) ? (object) $data->role : (object) ["id" => $data->role];
-            $role = new Role($roleObject);
+            $role = new Role((object)$data->role);
             $user->setRole($role);
         } else {
             $user->setRole(null);
+        }
+
+        if (isset($data->person)) {
+            $user->setPerson(new Person((object)$data->person));
+        } else {
+            $user->setPerson(null);
         }
 
 
@@ -86,6 +92,7 @@ class UserMapper
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
             'role' => $user->getRole() ? $user->getRole()->toArray() : $user->getRole(),
+            'person' => $user->getPerson() ? $user->getPerson()->toArray() : $user->getPerson(),
             'status' => $user->getStatus(),
             'created_at' => $user->getCreatedAt() ? $user->getCreatedAt()->format('Y-m-d\TH:i:s.uP') : null,
             'updated_at' => $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d\TH:i:s.uP') : null,
@@ -93,13 +100,17 @@ class UserMapper
     }
 
 
-    public function mapToArrayMultiple(array $users): array
+    public function mapToSave(User $user): array
     {
-        $mapped = [];
-        foreach ($users as $user) {
-            $mapped[] = $this->mapToArray($user);
-        }
-        return $mapped;
+        return [
+            'id' => $user->getId(),
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'role_id' => $user->getRole() ? $user->getRole()->getId() : $user->getRole(),
+            'person_id' => $user->getPerson() ? $user->getPerson()->getId() : $user->getPerson(),
+            'status' => $user->getStatus()
+        ];
     }
 
 }

@@ -7,7 +7,7 @@ use App\Modules\Core\Application\Models\Permission;
 
 class RoleMapper
 {
-    public function assignment(Role $role, object $data): void
+    public function assignment(Role $role, $data): void
     {
         if (isset($data->id)) {
             $role->setId($data->id);

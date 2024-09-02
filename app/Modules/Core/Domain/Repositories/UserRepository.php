@@ -20,14 +20,18 @@ trait UserRepository
 
     public function scopeUpdateUser($query, User $user)
     {
-        $params = collect($user->toArray())->filter()->all();
-        return $query->where('id', $user->toArray()['id'])->update($params);
+        $params = collect($user->toSave())->filter()->all();
+        return $query->where('id', $user->getId())->update($params);
     }
 
     /* -------------------------- RELATIONSHIP METHODS -------------------------- */
     
     public function scopeWithRole($query) {
         return $query->with('role');
+    }
+
+    public function scopeWithPerson($query) {
+        return $query->with('person');
     }
 
     /* ---------------------------------- WHERE --------------------------------- */

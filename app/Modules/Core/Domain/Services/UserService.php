@@ -29,8 +29,8 @@ class UserService
         $userQuery = $this->userEntity
             ->whereUserId($userId)
             ->withRole() 
+            ->withPerson()
             ->first();
-        // dd($userQuery->toArray());
         return new User((object)($userQuery->toArray()));
     }
 

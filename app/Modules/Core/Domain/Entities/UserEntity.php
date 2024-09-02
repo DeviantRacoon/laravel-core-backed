@@ -17,7 +17,8 @@ class UserEntity extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
+        'person_id',
         'status',
     ];
 
@@ -28,7 +29,7 @@ class UserEntity extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(RoleEntity::class, 'role');
+        return $this->belongsTo(RoleEntity::class, 'role_id');
     }
 
     public function person()

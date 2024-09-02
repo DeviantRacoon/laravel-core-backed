@@ -4,6 +4,7 @@ namespace App\Modules\Core\Application\Models;
 
 use DateTimeImmutable;
 use App\Modules\Core\Application\Models\Role;
+use App\Modules\Core\Application\Models\Person;
 use App\Modules\Core\Application\Mappers\UserMapper;
 
 class User extends UserMapper
@@ -17,7 +18,8 @@ class User extends UserMapper
     private ?string $name;
     private ?string $email;
     private ?string $password;
-    private ?Role $role;
+    private Role|null $role;
+    private Person|null $person;
     private ?int $status;
     private ?DateTimeImmutable $created_at;
     private ?DateTimeImmutable $updated_at;
@@ -50,9 +52,14 @@ class User extends UserMapper
         return $this->password;
     }
 
-    public function getRole(): ?Role
+    public function getRole(): Role|null
     { 
         return $this->role;
+    }
+
+    public function getPerson(): Person|null
+    { 
+        return $this->person;
     }
 
     public function getStatus(): ?int
@@ -93,9 +100,14 @@ class User extends UserMapper
         $this->password = $password;
     }
 
-    public function setRole(?Role $role): void
+    public function setRole(Role|null $role): void
     {
         $this->role = $role;
+    }
+
+    public function setPerson(Person|null $person): void
+    {
+        $this->person = $person;
     }
     
     public function setStatus(?int $status): void
@@ -119,6 +131,11 @@ class User extends UserMapper
     public function toArray(): array
     {
         return $this->mapToArray($this);
+    }
+
+    public function toSave(): array
+    {
+        return $this->mapToSave($this);
     }
 
     public function __toString(): string

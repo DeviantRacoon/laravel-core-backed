@@ -20,6 +20,8 @@ class UpdateUserRequest extends FormRequest
             'id' => 'required|integer|exists:catalog_users,id',
             'name' => 'unique:catalog_users,name,' . $id,
             'email' => 'email|unique:catalog_users,email,' . $id,
+            'person.id' => 'exists:catalog_persons,id',
+            'role.id' => 'exists:catalog_roles,id',
         ];
     }
 
@@ -50,6 +52,8 @@ class UpdateUserRequest extends FormRequest
             'email.required' => 'El correo es requerido.',
             'email.email' => 'El correo debe ser un correo válido.',
             'email.unique' => 'El correo ya existe.',
+            'person.id.exists' => 'La persona no existe.',
+            'role.id.exists' => 'El rol no existe.',
         ];
     }
 }
