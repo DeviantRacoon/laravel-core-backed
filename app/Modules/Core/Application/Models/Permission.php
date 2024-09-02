@@ -98,6 +98,11 @@ class Permission extends PermissionMapper
         return $this->mapToArray($this);
     }  
 
+    public function toSave(): array
+    {
+        return $this->mapToSave($this);
+    }
+
     public function __toString(): string
     {
         return (string) $this->id;

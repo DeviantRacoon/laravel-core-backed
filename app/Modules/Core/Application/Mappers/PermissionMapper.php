@@ -74,6 +74,15 @@ class PermissionMapper
         ];
     }
 
+    public function mapToSave(Permission $permission): array
+    {
+        return [
+            'id' => $permission->getId(),
+            'name' => $permission->getName(),
+            'description' => $permission->getDescription(),
+            'status' => $permission->getStatus()
+        ];
+    }
 
     public function mapToArrayMultiple($permissions): array
     {

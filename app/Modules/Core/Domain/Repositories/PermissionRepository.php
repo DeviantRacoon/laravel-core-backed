@@ -20,14 +20,14 @@ trait PermissionRepository
 
     public function scopeCreatePermission($query, Permission $permission)
     {
-        $params = collect($permission->toArray())->filter()->all();
+        $params = collect($permission->toSave())->filter()->all();
         return $query->create($params);
     }
 
     public function scopeUpdatePermission($query, Permission $permission)
     {
-        $params = collect($permission->toArray())->filter()->all();
-        return $query->where('id', $permission->toArray()->id)->update($params);
+        $params = collect($permission->toSave())->filter()->all();
+        return $query->where('id', $permission->getId())->update($params);
     }
     
 
