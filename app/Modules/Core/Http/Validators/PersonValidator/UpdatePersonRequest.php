@@ -20,10 +20,12 @@ class UpdatePersonRequest extends FormRequest
             'birthDate'                  => 'date_format:Y-m-d',
             'gender'                     => 'string|max:1',
 
+            'additionalData'             => 'required|array',
             'additionalData.curp'        => 'string|max:18|min:18|unique:catalog_person_additional_data,curp',
             'additionalData.cellphone'   => 'string|unique:catalog_person_additional_data,cellphone',
             'additionalData.photo'       => 'string|max:255',
-
+            'additionalData.addresses'   => 'required|array',
+            
             'addresses.id'               => 'integer|exists:catalog_person_addresses,id',
             'addresses.street'           => 'string|min:3',
             'addresses.exteriorNumber'   => 'string|min:3',
@@ -64,6 +66,8 @@ class UpdatePersonRequest extends FormRequest
             'gender.string'         => 'El genero debe ser una cadena de texto.',
             'gender.max'            => 'El genero debe tener un máximo de 1 caracteres.',
 
+            'additionalData.required'         => 'No se envió el campo additionalData.',
+            'additionalData.array'            => 'El campo additionalData debe ser un arreglo.',
             'additionalData.curp.unique'      => 'La CURP ya existe.',
             'additionalData.curp.max'         => 'La CURP debe tener un máximo de 18 caracteres.',
             'additionalData.curp.min'         => 'La CURP debe tener un mínimo de 18 caracteres.',
@@ -72,6 +76,8 @@ class UpdatePersonRequest extends FormRequest
             'additionalData.cellphone.min'    => 'El celular debe tener un mínimo de 10 caracteres.',
             'additionalData.photo.max'        => 'La foto de la imagen es demasiado grande.',
 
+            'addresses.required'              => 'No se envió el campo addresses.',
+            'addresses.array'                 => 'El campo addresses debe ser un arreglo.',
             'addresses.id.integer'            => 'El id de la dirección debe ser un valor numérico.',
             'addresses.id.exists'             => 'El id de la dirección no existe.',
             'addresses.street.string'         => 'La calle debe ser una cadena de texto.',
