@@ -5,6 +5,7 @@ namespace App\Modules\Core\Domain\Services;
 use App\Modules\Core\Domain\Entities\RoleEntity;
 use App\Modules\Core\Domain\Entities\PermissionEntity;
 use App\Modules\Core\Application\Models\Role;
+use App\Utils\PaginationHelper;
 
 class RoleService
 {
@@ -33,7 +34,6 @@ class RoleService
             ->whereRoleId($roleId)
             ->WithPermissions()
             ->first();
-        // dd($roleQuery->toArray());
         return new Role((object)($roleQuery->toArray()));
     }
 
@@ -45,10 +45,6 @@ class RoleService
             $rolesQuery->whereNameLike($params->name);
         }
 
-        if (isset($params->email)) {
-            $rolesQuery->whereEmail($params->email);
-        }
-
         if (isset($params->created_at)) {
             $rolesQuery->whereCreatedAt($params->created_at);
         }
@@ -57,12 +53,8 @@ class RoleService
             $rolesQuery->whereStatus($params->status);
         }
 
-        $Roles = [];
-        foreach ($rolesQuery->get() as $role) {
-            $Roles[] = new Role((object)($role->toArray()));
-        }
-
-        return $Roles;
+        $roles = PaginationHelper::paginate($rolesQuery, $params->limit ?? null, new Role);
+        return $roles;
     }
 
     public function addPermission($params)

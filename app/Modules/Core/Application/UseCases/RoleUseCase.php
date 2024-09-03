@@ -25,10 +25,11 @@ class RoleUseCase
         return $role->toArray();
     }
 
-    public function getRoleByParams($params)
+    public function getRolesByParams($params)
     {
         $roleModels = $this->roleService->getRoleByParams($params);
-        return array_map(fn($model) => $model->toArray(), $roleModels);
+        $roleModels['items'] = array_map(fn($model) => $model->toArray(), $roleModels['items']);
+        return $roleModels;
     }
 
     public function addManyPermission(array $params)

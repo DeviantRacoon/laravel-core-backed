@@ -57,10 +57,10 @@ class RoleController
         }
     }
 
-    public function getRoleByParams(Request $request)
+    public function getRolesByParams(Request $request)
     {
         try {
-            $roles = $this->roleUseCase->getRoleByParams((object)$request->all());
+            $roles = $this->roleUseCase->getRolesByParams((object)$request->all());
 
             return response()->json([
                 'ok' => true,

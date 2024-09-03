@@ -48,6 +48,9 @@ return [
 
     'expiration' => env('SESSION_LIFETIME', 1),
 
+
+    'master_key'=> env('MASTER_TOKEN',''),
+
     /*
     |--------------------------------------------------------------------------
     | Token Prefix

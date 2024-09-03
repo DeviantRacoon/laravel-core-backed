@@ -4,6 +4,7 @@ namespace App\Modules\Core\Domain\Services;
 
 use App\Modules\Core\Domain\Entities\PersonEntity;
 use App\Modules\Core\Application\Models\Person;
+use App\Utils\PaginationHelper;
 use Illuminate\Support\Facades\DB;
 
 class PersonService
@@ -55,11 +56,7 @@ class PersonService
             $personsQuery->whereStatus($params->status);
         }
 
-        $persons = [];
-        foreach ($personsQuery->get() as $person) {
-            $persons[] = new Person((object) ($person->toArray()));
-        }
-
+        $persons = PaginationHelper::paginate($personsQuery, $params->limit ?? null, new Person);
         return $persons;
     }
 

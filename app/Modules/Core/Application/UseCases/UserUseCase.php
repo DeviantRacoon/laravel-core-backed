@@ -28,7 +28,8 @@ class UserUseCase
     public function getUserByParams($params)
     {
         $userModels = $this->userService->getUserByParams($params);
-        return array_map(fn($model) => $model->toArray(), $userModels);
+        $userModels['items'] = array_map(fn($model) => $model->toArray(), $userModels['items']);
+        return $userModels;
     }
 
     public function updateUser($params)

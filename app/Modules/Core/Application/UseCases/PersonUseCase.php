@@ -28,7 +28,8 @@ class PersonUseCase
     public function getPersonsByParams($params)
     {
         $personModels = $this->personService->getPersonsByParams($params);
-        return array_map(fn($model) => $model->toArray(), $personModels);
+        $personModels['items'] = array_map(fn($model) => $model->toArray(), $personModels['items']);
+        return $personModels;
     }
 
     public function createPerson($params)

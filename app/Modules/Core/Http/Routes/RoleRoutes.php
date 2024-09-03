@@ -10,6 +10,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('{roleId}', [RoleController::class, 'getRoleByPk'])->where('roleId', '[0-9]+');
     Route::post('permission', [RoleController::class, 'addManyPermission']);
     Route::put('permission', [RoleController::class, 'addManyPermission']);
+    Route::post('params', [RoleController::class, 'getRolesByParams']);
     Route::post('', [RoleController::class, 'createRole']);
     Route::put('', [RoleController::class, 'updateRole']);
 });

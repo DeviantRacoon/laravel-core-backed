@@ -4,6 +4,7 @@ namespace App\Modules\Core\Domain\Services;
 
 use App\Modules\Core\Domain\Entities\UserEntity;
 use App\Modules\Core\Application\Models\User;
+use App\Utils\PaginationHelper;
 
 class UserService
 {
@@ -54,11 +55,7 @@ class UserService
             $usersQuery->whereStatus($params->status);
         }
 
-        $users = [];
-        foreach ($usersQuery->get() as $user) {
-            $users[] = new User((object)($user->toArray()));
-        }
-
+        $users = PaginationHelper::paginate($usersQuery, $params->limit ?? null, new User);
         return $users;
     }
 
