@@ -39,7 +39,14 @@ trait PersonRepository
     {
         $personParams = collect($person->toArray())->filter()->all();
         unset($personParams['additionalData']);
+        
+        if ($person->getAdditionalData() === null) {
+            $query->where('id', $person->getId())->update($personParams);
+            $personEntity = $query->whereId($person->getId())->first();
 
+            return $personEntity;
+        }
+        
         $additionalDataParams = collect($person->getAdditionalData()->toArray())->filter()->all();
         unset($additionalDataParams['addresses']);
 
